@@ -1,0 +1,12 @@
+{
+    "ID": "B823DE18-0AC2-4010-9D64-888E0E0CF21F",
+    "ActionKeyword": "n",
+    "Name": "NetworkDriveLauncher.FlowPlugin",
+    "Description": "Network Drive Launcher Plugin for Flow-Launcher",
+    "Author": "Gabriel De La Parra",
+    "Version": "1.0.0",
+    "Language": "csharp",
+    "Website": "https://github.com/Gabriel De La Parra/Flow.Launcher.Plugin.NetworkDriveLauncher.FlowPlugin",
+    "IcoPath": "icon.png",
+    "ExecuteFileName": "Flow.Launcher.Plugin.NetworkDriveLauncher.FlowPlugin.dll"
+}
