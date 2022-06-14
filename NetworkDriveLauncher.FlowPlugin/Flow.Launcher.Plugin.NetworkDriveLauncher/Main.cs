@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using NetworkDriveLauncher.Core.Index;
-using Wororo.Utilities;
+using NetworkDriveLauncher.Core.Utilities;
 
 namespace Flow.Launcher.Plugin.NetworkDriveLauncher
 {
@@ -44,12 +43,25 @@ namespace Flow.Launcher.Plugin.NetworkDriveLauncher
                     _index.BuildIndex();
                     return true;
                 },
-                IcoPath = "Images/app.png"
+                IcoPath = "Images/down.png"
             };
-            
+
             var list = new List<Result>() { buildResult };
             if (!File.Exists(_configuration.OutputFilename))
                 return list;
+
+            if (FileUtilities.IsFileLocked(new FileInfo(_configuration.OutputFilename)))
+            {
+                list.Add(new Result
+                {
+                    Title = "Index is being built.",
+                    SubTitle = "Please stand by",
+                    Score = 100,
+                    Action = c => true,
+                    IcoPath = "Images/lock.png"
+                });
+                return list;
+            }
 
             //Results from the query, only in the index exists
             var results = _index.Query(query.SearchTerms);
@@ -62,7 +74,8 @@ namespace Flow.Launcher.Plugin.NetworkDriveLauncher
                 {
                     System.Diagnostics.Process.Start("explorer.exe", x.FullName);
                     return true;
-                }
+                },
+                IcoPath = "Images/folder.png"
             }));
 
             return list;
