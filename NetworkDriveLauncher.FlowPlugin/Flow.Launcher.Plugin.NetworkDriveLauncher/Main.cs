@@ -43,7 +43,7 @@ namespace Flow.Launcher.Plugin.NetworkDriveLauncher
                     _index.BuildIndex();
                     return true;
                 },
-                IcoPath = "Images/down.png"
+                IcoPath = "Images/find.png"
             };
 
             var list = new List<Result>() { buildResult };
@@ -72,6 +72,7 @@ namespace Flow.Launcher.Plugin.NetworkDriveLauncher
                 Score = x.Score,
                 Action = c =>
                 {
+                    //TODO: Check first if the file exists (?).
                     System.Diagnostics.Process.Start("explorer.exe", x.FullName);
                     return true;
                 },
