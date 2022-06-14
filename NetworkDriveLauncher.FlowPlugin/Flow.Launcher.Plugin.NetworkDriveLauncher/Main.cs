@@ -33,7 +33,7 @@ namespace Flow.Launcher.Plugin.NetworkDriveLauncher
 
         public List<Result> Query(Query query)
         {
-
+            // Default result: To build an index:
             var buildResult = new Result
             {
                 Title = "Build Index",
@@ -46,12 +46,12 @@ namespace Flow.Launcher.Plugin.NetworkDriveLauncher
                 },
                 IcoPath = "Images/app.png"
             };
-
-
+            
             var list = new List<Result>() { buildResult };
             if (!File.Exists(_configuration.OutputFilename))
                 return list;
 
+            //Results from the query, only in the index exists
             var results = _index.Query(query.SearchTerms);
             list.AddRange(results.Select(x => new Result
             {
