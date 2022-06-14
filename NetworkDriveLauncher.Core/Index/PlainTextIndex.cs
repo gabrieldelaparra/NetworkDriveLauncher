@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NetworkDriveLauncher.Core.Utilities;
 using Wororo.Utilities;
 
 namespace NetworkDriveLauncher.Core.Index
@@ -25,7 +26,8 @@ namespace NetworkDriveLauncher.Core.Index
             var names = GetDirectories();
 
             indexPath.CreatePathIfNotExists();
-            File.WriteAllLines(indexPath, names);
+            //Using async to prevent the UI from locking (while maybe it should).
+            File.WriteAllLinesAsync(indexPath, names);
         }
 
         public IEnumerable<QueryResult> Query(IEnumerable<string> queryTerms)
@@ -35,18 +37,20 @@ namespace NetworkDriveLauncher.Core.Index
             if (!queryTerms.Any())
                 yield break;
 
+            if (FileUtilities.IsFileLocked(new FileInfo(Configuration.OutputFilename)))
+                yield break;
+
             var indexLines = Configuration.OutputFilename.ReadLines().ToArray();
 
-            var rootDirectories = Configuration.RootDirectories.Select(x => new DirectoryInfo(x).FullName).ToArray();
+            var rootDirectories = Configuration.RootDirectories
+                .Select(x => new DirectoryInfo(x).FullName)
+                .ToArray();
 
             foreach (var directory in indexLines)
             {
                 var depthOnly = directory;
                 foreach (var rootDirectory in rootDirectories)
                 {
-                    //TODO: Maybe get Directory.FullName for the replace.
-                    //On the Network Drive is not required, since the full path is given,
-                    //but on a relative path it is required.
                     depthOnly = depthOnly.Replace(rootDirectory, "");
                 }
 
@@ -77,7 +81,7 @@ namespace NetworkDriveLauncher.Core.Index
 
         public IEnumerable<string> GetDirectories()
         {
-            var rootDirectories = Configuration.RootDirectories.Select(x => new DirectoryInfo(x));
+            var rootDirectories = Configuration.RootDirectories.Select(x => new DirectoryInfo(x)).Where(x=>x.Exists);
 
             var innerDirectories = rootDirectories.SelectMany(x => GetLevelDirectories(x.FullName, Configuration.Depth));
 
