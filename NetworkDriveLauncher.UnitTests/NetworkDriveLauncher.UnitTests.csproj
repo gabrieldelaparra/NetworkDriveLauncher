@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NetworkDriveLauncher.Core\NetworkDriveLauncher.Core.csproj" />
-    <ProjectReference Include="..\NetworkDriveLauncher.FlowPlugin\Flow.Launcher.Plugin.NetworkDriveLauncher.FlowPlugin\Flow.Launcher.Plugin.NetworkDriveLauncher.csproj" />
+    <ProjectReference Include="..\NetworkDriveLauncher.FlowPlugin\Flow.Launcher.Plugin.NetworkDriveLauncher\Flow.Launcher.Plugin.NetworkDriveLauncher.csproj" />
   </ItemGroup>
 
 </Project>

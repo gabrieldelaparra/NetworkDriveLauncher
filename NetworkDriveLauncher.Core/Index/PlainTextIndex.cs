@@ -53,7 +53,7 @@ namespace NetworkDriveLauncher.Core.Index
                 var split = depthOnly.Split('\\', StringSplitOptions.RemoveEmptyEntries);
                 if (!split.Any())
                     continue;
-                var folderName = split.LastOrDefault();
+                var folderName = split.LastOrDefault() ?? string.Empty;
 
                 //var depthOnly = split.Reverse().Take(Configuration.Depth + 1).Reverse().ToArray();
                 var separated = split.SelectMany(x => x.Split(separators, StringSplitOptions.RemoveEmptyEntries)).ToArray();
