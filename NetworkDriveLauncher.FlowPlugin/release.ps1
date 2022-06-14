@@ -1,2 +1,2 @@
-dotnet publish Flow.Launcher.Plugin.NetworkDriveLauncher.FlowPlugin -c Release -r win-x64
-Compress-Archive -LiteralPath Flow.Launcher.Plugin.NetworkDriveLauncher.FlowPlugin/bin/Release/win-x64/publish -DestinationPath Flow.Launcher.Plugin.NetworkDriveLauncher.FlowPlugin/bin/NetworkDriveLauncher.FlowPlugin.zip -Force
+dotnet publish Flow.Launcher.Plugin.NetworkDriveLauncher -c Release -r win-x64
+Compress-Archive -LiteralPath Flow.Launcher.Plugin.NetworkDriveLauncher/bin/Release/win-x64/publish -DestinationPath Flow.Launcher.Plugin.NetworkDriveLauncher/bin/NetworkDriveLauncher.zip -Force

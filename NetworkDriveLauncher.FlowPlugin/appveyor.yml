@@ -6,13 +6,13 @@ environment:
     DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
 build_script:
-- ps: dotnet publish -c Release -r win-x64 Flow.Launcher.Plugin.NetworkDriveLauncher.FlowPlugin/Flow.Launcher.Plugin.NetworkDriveLauncher.FlowPlugin.csproj
+- ps: dotnet publish -c Release -r win-x64 Flow.Launcher.Plugin.NetworkDriveLauncher/Flow.Launcher.Plugin.NetworkDriveLauncher.csproj
 
 after_build:
 - ps: >-
-    Compress-Archive -Path "Flow.Launcher.Plugin.NetworkDriveLauncher.FlowPlugin\bin\Release\win-x64\publish\*" -DestinationPath "plugin.zip"
+    Compress-Archive -Path "Flow.Launcher.Plugin.NetworkDriveLauncher\bin\Release\win-x64\publish\*" -DestinationPath "plugin.zip"
 
-    Rename-Item plugin.zip Flow.Launcher.Plugin.NetworkDriveLauncher.FlowPlugin.flowlauncher
+    Rename-Item plugin.zip Flow.Launcher.Plugin.NetworkDriveLauncher.flowlauncher
 
 artifacts:
-    - path: 'Flow.Launcher.Plugin.NetworkDriveLauncher.FlowPlugin.flowlauncher'
+    - path: 'Flow.Launcher.Plugin.NetworkDriveLauncher.flowlauncher'
