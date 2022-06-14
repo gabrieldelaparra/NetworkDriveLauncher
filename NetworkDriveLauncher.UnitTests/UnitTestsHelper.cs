@@ -4,7 +4,16 @@ namespace NetworkDriveLauncher.UnitTests
 {
     public static class UnitTestsHelper
     {
-        public static void CreateDirectories(string rootPath, int dirsPerLevel, int depth)
+        public static void CreateDirectoriesFromArray(string rootPath, string[] directories)
+        {
+            rootPath.CreatePathIfNotExists();
+            foreach (var directory in directories)
+            {
+                var path = Path.Combine(rootPath, directory);
+                path.CreatePathIfNotExists();
+            }
+        }
+        public static void CreateDepthDirectories(string rootPath, int dirsPerLevel, int depth)
         {
             rootPath.CreatePathIfNotExists();
             CreateDirectoriesRecursive(rootPath, dirsPerLevel, depth, 0);
