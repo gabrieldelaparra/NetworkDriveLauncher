@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using NetworkDriveLauncher.Core.Models;
+using System.Collections.Generic;
 
 namespace NetworkDriveLauncher.Core.Index
 {

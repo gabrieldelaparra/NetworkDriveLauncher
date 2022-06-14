@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
-namespace NetworkDriveLauncher.Core
+namespace NetworkDriveLauncher.Core.Models
 {
+    [DebuggerDisplay("({Score}) {Title} -  {SubTitle} - {FullName}")]
     public class QueryResult
     {
         public int Score { get; set; }
