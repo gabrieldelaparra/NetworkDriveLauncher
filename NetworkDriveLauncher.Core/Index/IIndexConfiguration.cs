@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NetworkDriveLauncher.Core
+namespace NetworkDriveLauncher.Core.Index
 {
     public interface IIndexConfiguration
     {

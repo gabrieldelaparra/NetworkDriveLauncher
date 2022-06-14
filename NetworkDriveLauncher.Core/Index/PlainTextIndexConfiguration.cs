@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Wororo.Utilities;
 
-namespace NetworkDriveLauncher.Core
+namespace NetworkDriveLauncher.Core.Index
 {
     public class PlainTextIndexConfiguration : IIndexConfiguration
     {
@@ -14,13 +14,13 @@ namespace NetworkDriveLauncher.Core
             _configuration = configuration;
         }
 
-        public bool OverwriteIndex => _configuration[nameof(OverwriteIndex)]?.ToBool() ?? false;
+        public bool OverwriteIndex => _configuration[nameof(OverwriteIndex)]?.ToBool() ?? true;
         public int Depth => _configuration[nameof(Depth)]?.ToInt() ?? 3;
         public IEnumerable<string> RootDirectories
         {
             get
             {
-                var rootDirectory = this._configuration
+                var rootDirectory = _configuration
                     .GetSection(nameof(RootDirectories))
                     .GetChildren()
                     .Select(x => x.Value)

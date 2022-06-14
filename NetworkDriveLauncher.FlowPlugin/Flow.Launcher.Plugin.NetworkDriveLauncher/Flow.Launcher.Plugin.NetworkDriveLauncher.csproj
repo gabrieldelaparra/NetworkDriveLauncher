@@ -5,8 +5,8 @@
     <AssemblyName>Flow.Launcher.Plugin.NetworkDriveLauncher</AssemblyName>
     <PackageId>Flow.Launcher.Plugin.NetworkDriveLauncher</PackageId>
     <Authors>gabrieldelaparra</Authors>
-    <PackageProjectUrl>https://github.com/gabrieldelaparra/Flow.Launcher.Plugin.NetworkDriveLauncher</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/gabrieldelaparra/Flow.Launcher.Plugin.NetworkDriveLauncher</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/gabrieldelaparra/NetworkDriveLauncher</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/gabrieldelaparra/NetworkDriveLauncher</RepositoryUrl>
     <PackageTags>flow-launcher flow-plugin</PackageTags>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <PackageReference Include="Flow.Launcher.Plugin" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

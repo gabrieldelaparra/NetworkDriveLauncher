@@ -1,13 +1,13 @@
 using Microsoft.Extensions.Configuration;
-using NetworkDriveLauncher.Core;
+using NetworkDriveLauncher.Core.Index;
 using Wororo.Utilities;
 
 namespace NetworkDriveLauncher.UnitTests
 {
-    public class Tests
+    public class PlainTestIndexTests
     {
-        private PlainTextIndexBuilder indexBuilder;
-        private PlainTextIndexConfiguration configuration;
+        private PlainTextIndex _index;
+        private PlainTextIndexConfiguration _configuration;
 
         [SetUp]
         public void Setup()
@@ -16,23 +16,23 @@ namespace NetworkDriveLauncher.UnitTests
                 .AddJsonFile("appsettings.Development.json")
                 .Build();
 
-            configuration = new PlainTextIndexConfiguration(config);
-            indexBuilder = new PlainTextIndexBuilder(configuration);
+            _configuration = new PlainTextIndexConfiguration(config);
+            _index = new PlainTextIndex(_configuration);
         }
 
         [Test]
         public void TestConfigurationFile()
         {
             //Assert
-            Assert.NotNull(configuration);
-            Assert.NotNull(configuration.OutputFilename);
-            Assert.NotNull(configuration.Depth);
-            Assert.NotNull(configuration.OverwriteIndex);
-            Assert.NotNull(configuration.RootDirectories);
+            Assert.NotNull(_configuration);
+            Assert.NotNull(_configuration.OutputFilename);
+            Assert.NotNull(_configuration.Depth);
+            Assert.NotNull(_configuration.OverwriteIndex);
+            Assert.NotNull(_configuration.RootDirectories);
 
-            Assert.IsTrue(configuration.OutputFilename.IsNotEmpty());
-            Assert.IsNotEmpty(configuration.RootDirectories);
-            Assert.IsTrue(configuration.RootDirectories.FirstOrDefault().IsNotEmpty());
+            Assert.IsTrue(_configuration.OutputFilename.IsNotEmpty());
+            Assert.IsNotEmpty(_configuration.RootDirectories);
+            Assert.IsTrue(_configuration.RootDirectories.FirstOrDefault().IsNotEmpty());
         }
 
         [Test]
@@ -59,13 +59,13 @@ namespace NetworkDriveLauncher.UnitTests
         public void TestBuildIndexWithDepth3And1Directory()
         {
             //Arrange
-            var developmentDirectory = configuration.RootDirectories.FirstOrDefault();
+            var developmentDirectory = _configuration.RootDirectories.FirstOrDefault();
             Assert.IsTrue(developmentDirectory.IsNotEmpty());
             developmentDirectory.DeleteIfExists();
             UnitTestsHelper.CreateDirectories(developmentDirectory, 1, 3);
 
             //Act
-            var directories = indexBuilder.GetDirectories().ToList();
+            var directories = _index.GetDirectories().ToList();
             
             //Assert
             Assert.That(directories.Count, Is.EqualTo(3));
@@ -75,13 +75,13 @@ namespace NetworkDriveLauncher.UnitTests
         public void TestBuildIndexWithDepth1And3Directories()
         {
             //Arrange
-            var developmentDirectory = configuration.RootDirectories.FirstOrDefault();
+            var developmentDirectory = _configuration.RootDirectories.FirstOrDefault();
             Assert.IsTrue(developmentDirectory.IsNotEmpty());
             developmentDirectory.DeleteIfExists();
             UnitTestsHelper.CreateDirectories(developmentDirectory, 3, 1);
 
             //Act
-            var directories = indexBuilder.GetDirectories().ToList();
+            var directories = _index.GetDirectories().ToList();
             //Assert
             Assert.That(directories.Count, Is.EqualTo(3));
         }
@@ -90,13 +90,13 @@ namespace NetworkDriveLauncher.UnitTests
         public void TestBuildIndexWithDepth3And4Directories()
         {
             //Arrange
-            var developmentDirectory = configuration.RootDirectories.FirstOrDefault();
+            var developmentDirectory = _configuration.RootDirectories.FirstOrDefault();
             Assert.IsTrue(developmentDirectory.IsNotEmpty());
             developmentDirectory.DeleteIfExists();
             UnitTestsHelper.CreateDirectories(developmentDirectory, 4, 3);
 
             //Act
-            var directories = indexBuilder.GetDirectories().ToList();
+            var directories = _index.GetDirectories().ToList();
 
             //Assert
             Assert.That(directories.Count, Is.EqualTo(84));
