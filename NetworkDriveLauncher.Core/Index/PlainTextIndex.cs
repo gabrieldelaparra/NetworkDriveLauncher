@@ -76,7 +76,19 @@ namespace NetworkDriveLauncher.Core.Index
                 var successCount = 0;
                 foreach (var word in queryTerms)
                 {
-                    successCount += separated.Count(x => x.Contains(word, StringComparison.OrdinalIgnoreCase));
+                    var found = separated.Any(x => x.Contains(word, StringComparison.OrdinalIgnoreCase));
+                    if (found)
+                    {
+                        //Random number.
+                        //Want to give some additional weight to the the results, for each of the words found
+                        //Instead of when the same word is found more than once.
+                        successCount += 77;
+                    }
+                    var count = separated.Count(x => x.Contains(word, StringComparison.OrdinalIgnoreCase));
+                    if (count > 0)
+                    {
+                        successCount += count;
+                    }
                 }
                 if (successCount > 0)
                 {

@@ -218,6 +218,7 @@ namespace NetworkDriveLauncher.UnitTests
             var sampleDirectories = new[]
             {
                 "22758-LyonDellBasel Configurateur d'état-ReJae\\",
+                "22758-LyonDellBasel Configurateur d'état-ReJae\\3-Design-Documents\\02-Basedesign\\",
                 "24554-Vilnius-Railway-Elecnor-bec\\",
                 "24554-Vilnius-Railway-Elecnor-bec\\3-Design-Documents\\02-Basedesign\\",
                 "16853-Duri 150KV-cm\\3-Design-Documents\\02-Basedesign\\",
