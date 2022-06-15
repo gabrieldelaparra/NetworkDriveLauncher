@@ -52,7 +52,7 @@ namespace Flow.Launcher.Plugin.NetworkDriveLauncher
                     {
                         if (_indexFileIsLocked)
                             return false;
-                        _index.BuildIndex();
+                        _index.BuildIndexAsync();
                         return true;
                     },
                     IcoPath = _indexFileIsLocked
