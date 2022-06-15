@@ -1,8 +1,7 @@
-﻿using NetworkDriveLauncher.Core.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace NetworkDriveLauncher.Core.Index
+namespace NetworkDriveLauncher.Core.Models
 {
     public interface IIndex<out T> where T : IIndexConfiguration
     {
