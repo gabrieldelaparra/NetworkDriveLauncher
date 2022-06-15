@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using NetworkDriveLauncher.Core.Index;
 using Wororo.Utilities;
@@ -141,7 +142,7 @@ namespace NetworkDriveLauncher.UnitTests
         }
 
         [Test]
-        public void TestQueries()
+        public void TestQueriesWithSampleWords()
         {
             //Arrange
             var developmentDirectory = _configuration.RootDirectories.FirstOrDefault();
@@ -153,11 +154,10 @@ namespace NetworkDriveLauncher.UnitTests
                 "alpha\\beta_gamma\\charlie\\tango\\",
                 "test_other\\beta_gamma\\sample-word.this\\after depth\\",
             };
-            //The last item, "after depth" should not be in the index, since Depth == 3.
 
             UnitTestsHelper.CreateDirectoriesFromArray(developmentDirectory, sampleDirectories);
 
-            _index.BuildIndex();
+            _index.BuildIndexAsync().Wait();
 
             var queryTerms = new[] { "test" };
             var results = _index.Query(queryTerms).OrderByDescending(x => x.Score).ToArray();
@@ -169,6 +169,7 @@ namespace NetworkDriveLauncher.UnitTests
                 "test_other\\beta_gamma",
                 "test\\sample-word\\depth",
                 "test_other\\beta_gamma\\sample-word.this",
+                "test_other\\beta_gamma\\sample-word.this\\after depth",
             };
             Assert.AreEqual(expectedResults.Length, results.Length);
             for (int i = 0; i < expectedResults.Length; i++)
@@ -177,6 +178,61 @@ namespace NetworkDriveLauncher.UnitTests
                 var actual = results[i].Title;
                 Assert.AreEqual(expected, actual);
             }
+        }
+
+        [Test]
+        public void TestQueriesWith24554()
+        {
+            //Arrange
+            var developmentDirectory = _configuration.RootDirectories.FirstOrDefault();
+            Assert.IsTrue(developmentDirectory.IsNotEmpty());
+            developmentDirectory.DeleteIfExists();
+            var sampleDirectories = new[]
+            {
+                "22758-LyonDellBasel Configurateur d'état-ReJae\\",
+                "24554-Vilnius-Railway-Elecnor-bec\\",
+                "24554-Vilnius-Railway-Elecnor-bec\\3-Design-Documents\\02-Basedesign\\",
+                "16853-Duri 150KV-cm\\3-Design-Documents\\02-Basedesign\\",
+                "19xxx-DA_Demo_2017\\WMWare_Win_7_x86_SP1 base\\",
+            };
+            //The last item, "after depth" should not be in the index, since Depth == 3.
+
+            UnitTestsHelper.CreateDirectoriesFromArray(developmentDirectory, sampleDirectories);
+
+            _index.BuildIndexAsync().Wait();
+
+            var queryTerms = new[] { "24554"};
+            var results = _index.Query(queryTerms).OrderByDescending(x => x.Score).ToArray();
+            var expectedResult = "24554-Vilnius-Railway-Elecnor-bec";
+            Assert.AreEqual(expectedResult, results.FirstOrDefault().Title);
+            
+        }
+
+        [Test]
+        public void TestQueriesWith24554Base()
+        {
+            //Arrange
+            var developmentDirectory = _configuration.RootDirectories.FirstOrDefault();
+            Assert.IsTrue(developmentDirectory.IsNotEmpty());
+            developmentDirectory.DeleteIfExists();
+            var sampleDirectories = new[]
+            {
+                "22758-LyonDellBasel Configurateur d'état-ReJae\\",
+                "24554-Vilnius-Railway-Elecnor-bec\\",
+                "24554-Vilnius-Railway-Elecnor-bec\\3-Design-Documents\\02-Basedesign\\",
+                "16853-Duri 150KV-cm\\3-Design-Documents\\02-Basedesign\\",
+                "19xxx-DA_Demo_2017\\WMWare_Win_7_x86_SP1 base\\",
+            };
+            //The last item, "after depth" should not be in the index, since Depth == 3.
+
+            UnitTestsHelper.CreateDirectoriesFromArray(developmentDirectory, sampleDirectories);
+
+            _index.BuildIndexAsync().Wait();
+
+            var queryTerms = new[] { "24554", "base" };
+            var results = _index.Query(queryTerms).OrderByDescending(x => x.Score).ToArray();
+            var expectedResult = "24554-Vilnius-Railway-Elecnor-bec\\3-Design-Documents\\02-Basedesign";
+            Assert.AreEqual(expectedResult, results.FirstOrDefault().Title);
         }
 
     }
