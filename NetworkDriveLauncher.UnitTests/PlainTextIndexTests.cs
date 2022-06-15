@@ -1,11 +1,10 @@
-using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using NetworkDriveLauncher.Core.Index;
 using Wororo.Utilities;
 
 namespace NetworkDriveLauncher.UnitTests
 {
-    public class PlainTestIndexTests
+    public class PlainTextIndexTests
     {
         private PlainTextIndex _index;
         private PlainTextIndexConfiguration _configuration;
