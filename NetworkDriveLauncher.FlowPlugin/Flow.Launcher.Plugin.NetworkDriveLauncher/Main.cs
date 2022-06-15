@@ -15,15 +15,18 @@ namespace Flow.Launcher.Plugin.NetworkDriveLauncher
         private PlainTextIndex _index;
         private PlainTextIndexConfiguration _configuration;
         private string _executionPath = string.Empty;
+        private string _configurationFilename = string.Empty;
+        private bool _indexFileExists = false;
+        private bool _indexFileIsLocked = false;
         public void Init(PluginInitContext context)
         {
             _context = context;
             _executionPath = new FileInfo(_context.CurrentPluginMetadata.ExecuteFilePath).Directory.FullName;
 
-            var configFilename = $"{_executionPath}\\appsettings.json";
+            _configurationFilename = $"{_executionPath}\\appsettings.json";
 
             IConfiguration config = new ConfigurationBuilder()
-                .AddJsonFile(configFilename)
+                .AddJsonFile(_configurationFilename, optional: false, reloadOnChange: true)
                 .Build();
 
             _configuration = new PlainTextIndexConfiguration(config);
@@ -32,32 +35,68 @@ namespace Flow.Launcher.Plugin.NetworkDriveLauncher
 
         public List<Result> Query(Query query)
         {
-            // Default result: To build an index:
-            var buildResult = new Result
+            _indexFileExists = File.Exists(_configuration.OutputFilename);
+            _indexFileIsLocked = FileUtilities.IsFileLocked(new FileInfo(_configuration.OutputFilename));
+            var list = new List<Result>();
+            if (query.SearchTerms.Length < 1)
             {
-                Title = "Build Index",
-                SubTitle = $"(Re)Builds a new index using appsettings.json RootDirectories",
-                Score = -100,
-                Action = c =>
+                // Default result: To build an index
+                list.Add(new Result
                 {
-                    _index.BuildIndex();
-                    return true;
-                },
-                IcoPath = "Images/find.png"
-            };
+                    Title = "Build Index",
+                    SubTitle = _indexFileIsLocked
+                        ? "Cannot build index now. Index is being built."
+                        : $"(Re)Builds a new index using appsettings.json RootDirectories",
+                    Score = 20,
+                    Action = c =>
+                    {
+                        if (_indexFileIsLocked)
+                            return false;
+                        _index.BuildIndex();
+                        return true;
+                    },
+                    IcoPath = _indexFileIsLocked
+                        ? "Images/cancel.png"
+                        : "Images/find.png"
+                });
 
-            var list = new List<Result>() { buildResult };
-            if (!File.Exists(_configuration.OutputFilename))
+                // Default result: Open settings file
+                list.Add(new Result
+                {
+                    Title = "Open settings file",
+                    Score = 10,
+                    Action = c =>
+                    {
+                        System.Diagnostics.Process.Start("explorer.exe", _configurationFilename);
+                        return true;
+                    },
+                    IcoPath = "Images/settings.png"
+                });
+            }
+
+            //Default result if there is no index file.
+            if (!_indexFileExists)
+            {
+                list.Add(new Result
+                {
+                    Title = "Index does not exist.",
+                    SubTitle = "Please build an index first.",
+                    Score = 100,
+                    Action = c => false,
+                    IcoPath = "Images/cancel.png"
+                });
                 return list;
+            }
 
-            if (FileUtilities.IsFileLocked(new FileInfo(_configuration.OutputFilename)))
+            //Default result if index file is locked (index being built)
+            if (_indexFileIsLocked)
             {
                 list.Add(new Result
                 {
                     Title = "Index is being built.",
                     SubTitle = "Please stand by",
                     Score = 100,
-                    Action = c => true,
+                    Action = c => false,
                     IcoPath = "Images/lock.png"
                 });
                 return list;
