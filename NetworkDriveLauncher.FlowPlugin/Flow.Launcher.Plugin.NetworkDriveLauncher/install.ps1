@@ -9,15 +9,15 @@ if ($myProcess) {
 }
 
 Write-Host "  > Copy files..."
-Copy-Item -Path '.\bin\Release\win-x64\publish\*' -Destination 'C:\Users\chgadel1\AppData\Roaming\FlowLauncher\Plugins\NetworkDriveLauncher-1.0.0\' -Recurse -Force
+Copy-Item -Path '.\bin\Release\win-x64\publish\*' -Destination (Join-Path $env:APPDATA '\FlowLauncher\Plugins\NetworkDriveLauncher-1.0.0\') -Recurse -Force
 
 if($myProcess.HasExited)
 {
   Write-Host "  > Start:" $myProcess.Name
-  Start-Process -FilePath "C:\Users\chgadel1\AppData\Local\FlowLauncher\Flow.Launcher.exe"
+  Start-Process -FilePath (Join-Path $env:LOCALAPPDATA "\FlowLauncher\Flow.Launcher.exe")
 }
 
 if(!$myProcess){
   Write-Host "  > Start:" $processName
-  Start-Process -FilePath "C:\Users\chgadel1\AppData\Local\FlowLauncher\Flow.Launcher.exe"
+  Start-Process -FilePath (Join-Path $env:LOCALAPPDATA "\FlowLauncher\Flow.Launcher.exe")
 }
