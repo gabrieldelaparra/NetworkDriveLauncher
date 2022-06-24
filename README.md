@@ -21,10 +21,10 @@ The file should look something like this:
   "Depth": 4,
   "OverwriteIndex": true,
   "RootDirectories": [ 
-    "\\Path\To\Network\Drive\Folder\",
-    "\\Path\To\Another\Network\Drive\Folder\"
+    "\\\\Path\\To\\Network\\Drive\\Folder\\",
+    "\\\\Path\\To\\Another\\Network\\Drive\\Folder\\"
   ],
-  "OutputFilename":  "C:\Index.txt" 
+  "OutputFilename":  "C:\\Index.txt" 
 }
 ```
 
